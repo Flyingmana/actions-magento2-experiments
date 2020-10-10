@@ -40,6 +40,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: FS check
+        run: |
+          ls -la
+          ls -la /home/runner/.composer/cache/files
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
@@ -65,6 +69,7 @@ jobs:
         run: |
           ls -la
           ls -la magento
+          ls -la /home/runner/.composer/cache/files
       - name: docker logs
         run: |
           docker logs "${{ job.services.nginx.id }}"
