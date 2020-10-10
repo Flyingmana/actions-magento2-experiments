@@ -43,7 +43,7 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+          echo "::set-output name=dir::$(composer config -g cache-files-dir)"
 
       - name: Cache Composer Downloads
         uses: actions/cache@v1
