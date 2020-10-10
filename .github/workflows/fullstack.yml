@@ -54,7 +54,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.magento-version }}-1
+          key: ${{ runner.os }}-composer-${{ matrix.magento-version }}-2
 
 
 
