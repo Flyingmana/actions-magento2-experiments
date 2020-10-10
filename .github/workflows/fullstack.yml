@@ -40,13 +40,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Configure composer auth
-        uses: php-actions/composer@v2
-        with:
-          command: config
-          only_args: -a http-basic.repo.magento.com ${{ secrets.MAGENTO_USERNAME }} ${{ secrets.MAGENTO_PASSWORD }}
       - name: Install Magento
         uses: php-actions/composer@v2
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         with:
           command: create-project
           only_args: --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento
