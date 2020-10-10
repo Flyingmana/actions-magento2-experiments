@@ -40,14 +40,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: FS check
-        run: |
-          ls -la
-          ls -la /home/runner/.composer/cache/files
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config -g cache-files-dir)"
+      - name: FS check
+        run: |
+          mkdir -p ${{ steps.composer-cache.outputs.dir }}
+          ls -la
+          ls -la /home/runner/.composer/cache/files
 
       - name: Cache Composer Downloads
         uses: actions/cache@v1
