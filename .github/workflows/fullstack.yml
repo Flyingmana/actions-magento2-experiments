@@ -52,6 +52,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ matrix.magento-version }}
 
 
+
       - name: Install Magento
         uses: php-actions/composer@v2
         env:
