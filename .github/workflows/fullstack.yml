@@ -44,11 +44,18 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config -g cache-files-dir)"
+      - name: Cache PHP dependencies
+        uses: actions/cache@v1
+        with:
+          path: magento
+          key: ${{ runner.OS }}-magento-${{ matrix.magento-version }}
       - name: FS check
         run: |
           mkdir -p ${{ steps.composer-cache.outputs.dir }}
+          mkdir -p magento
+          cp m2-composer-templates/2.4.0-composer.json magento/composer.json
+          cp m2-composer-templates/2.4.0-composer.lock magento/composer.lock
           ls -la
-          ls -la /home/runner/.composer/cache/files
 
       - name: Cache Composer Downloads
         uses: actions/cache@v1
@@ -61,11 +68,11 @@ jobs:
 
       - name: Install Magento
         uses: php-actions/composer@v2
+        working-directory: ./magento
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         with:
-          command: create-project
-          only_args: --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento --ignore-platform-reqs
+          command: install --ignore-platform-reqs
 
       - name: FS check
         run: |
