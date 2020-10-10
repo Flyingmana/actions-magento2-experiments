@@ -42,8 +42,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Magento
         uses: php-actions/composer@v2
-          with:
-            command: composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento
+        with:
+          command: composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento
 
       - name: FS check
         run: |
