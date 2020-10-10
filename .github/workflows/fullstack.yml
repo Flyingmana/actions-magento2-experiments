@@ -1,0 +1,55 @@
+name: "FullStack"
+on:
+  push:
+
+
+jobs:
+  test-host:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-images: [ 'openmage/php:7.3.20', 'openmage/php:7.4.4']
+        magento-version: [ '2.4.0' ]
+        mysql-images: [ 'mysql:8']
+
+    services:
+      mysql:
+        image: ${{ matrix.mysql-images }}
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      fpm:
+        image: ${{ matrix.php-images }}
+        ports:
+          - 9000:9000
+        volumes:
+          - ${{ github.workspace }}/:/var/www
+      #          - ${{ github.workspace }}/.github/workflows/fpm-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini
+      nginx:
+        image: flyingmana/openmage-action-service:nginx
+        ports:
+          - 8080:80
+        volumes:
+          - ${{ github.workspace }}/:/var/www
+#          - ${{ github.workspace }}/.github/workflows/integration/nginx.conf:/etc/nginx/conf.d/default.conf
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Magento
+        uses: php-actions/composer@v2
+          with:
+            command: composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento
+
+      - name: FS check
+        run: |
+          ls -la
+          ls -la magento
+      - name: docker logs
+        run: |
+          docker logs "${{ job.services.nginx.id }}"
+          docker logs "${{ job.services.fpm.id }}"
