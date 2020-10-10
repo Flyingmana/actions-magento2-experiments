@@ -46,7 +46,7 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         with:
           command: create-project
-          only_args: --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento
+          only_args: --repository-url=https://repo.magento.com/ magento/project-community-edition ./magento --ignore-platform-reqs
 
       - name: FS check
         run: |
