@@ -40,6 +40,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Configure composer auth
+        uses: php-actions/composer@v2
+        with:
+          - command config
+          - only_args: -a -g http-basic.repo.magento.com ${{ secrets.MAGENTO_USERNAME }} ${{ secrets.MAGENTO_PASSWORD }}
       - name: Install Magento
         uses: php-actions/composer@v2
         with:
