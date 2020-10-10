@@ -68,11 +68,10 @@ jobs:
 
       - name: Install Magento
         uses: php-actions/composer@v2
-        working-directory: ./magento
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         with:
-          command: install --ignore-platform-reqs
+          command: install --ignore-platform-reqs --working-dir ./magento
 
       - name: FS check
         run: |
