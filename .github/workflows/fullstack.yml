@@ -33,6 +33,7 @@ jobs:
         image: elasticsearch:7.9.2
         ports:
           - 9200:9200
+        options: --health-cmd="curl --silent --fail localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=6
       fpm:
         image: ${{ matrix.php.fpm-image }}
         ports:
@@ -95,6 +96,7 @@ jobs:
       - name: elastic check
         run: |
           curl elastic:9200
+          docker logs "${{ job.services.elastic.id }}"
       - name: Install Database
         run: |
           cd ./magento
