@@ -92,7 +92,7 @@ jobs:
           php -v
           php ./bin/magento --version
           php ./bin/magento list
-          ./bin/magento setup:install --db-host mysql --db-password password --base-url http://nginx/ --admin-firstname Nia --admin-lastname Admin --admin-email example.com --admin-user nia-admin --admin-password nia-placeholder-password
+          ./bin/magento setup:install --db-host mysql --db-user root --db-password password --base-url http://nginx/ --admin-firstname Nia --admin-lastname Admin --admin-email example.com --admin-user nia-admin --admin-password nia-placeholder-password
       - name: FS check
         run: |
           ls -la
