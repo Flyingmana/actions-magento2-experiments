@@ -6,7 +6,6 @@ on:
 jobs:
   test-host:
     runs-on: ubuntu-latest
-    container: openmage/php:7.3.20
     strategy:
       max-parallel: 2
       matrix:
@@ -69,13 +68,17 @@ jobs:
           cp m2-composer-templates/2.4.0-composer.lock magento/composer.lock
           ls -la
           cat /etc/hosts
+          echo "127.0.0.1 elastic \n" > /etc/hosts
+          echo "127.0.0.1 mysql \n" > /etc/hosts
+          echo "127.0.0.1 nginx \n" > /etc/hosts
+          cat /etc/hosts
 
       - name: Configure sysctl limits
         run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
+          swapoff -a
+          sysctl -w vm.swappiness=1
+          sysctl -w fs.file-max=262144
+          sysctl -w vm.max_map_count=262144
 
       - uses: getong/elasticsearch-action@v1.2
         with:
