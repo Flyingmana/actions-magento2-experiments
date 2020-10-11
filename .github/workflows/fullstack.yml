@@ -112,7 +112,6 @@ jobs:
           command: install --ignore-platform-reqs --working-dir ./magento
       - name: elastic check
         run: |
-#          docker logs "${{ job.services.elastic.id }}"
           curl elastic:9200
       - name: Install Database
         run: |
