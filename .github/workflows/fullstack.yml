@@ -6,7 +6,7 @@ on:
 jobs:
   test-host:
     runs-on: ubuntu-latest
-    container: ubuntu:latest
+    container: openmage/php:7.3.20
     strategy:
       max-parallel: 2
       matrix:
