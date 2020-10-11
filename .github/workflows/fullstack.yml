@@ -68,6 +68,7 @@ jobs:
           cp m2-composer-templates/2.4.0-composer.json magento/composer.json
           cp m2-composer-templates/2.4.0-composer.lock magento/composer.lock
           ls -la
+          cat /etc/hosts
 
       - name: Configure sysctl limits
         run: |
