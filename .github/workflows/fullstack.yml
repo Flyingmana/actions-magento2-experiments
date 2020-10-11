@@ -10,7 +10,11 @@ jobs:
       max-parallel: 2
       matrix:
         operating-system: [ubuntu-latest]
-        php-images: [ 'openmage/php:7.3.20' ]
+        php:
+          - fpm-image: 'openmage/php:7.3.20'
+            cli-setup: '7.3'
+          - fpm-image: 'openmage/php:7.3.20'
+            cli-setup: '7.3'
         magento-version: [ '2.4.0' ]
         mysql-images: [ 'mysql:8']
 
@@ -23,7 +27,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       fpm:
-        image: ${{ matrix.php-images }}
+        image: ${{ matrix.php.fpm-imag }}
         ports:
           - 9000:9000
         volumes:
@@ -64,6 +68,17 @@ jobs:
           key: ${{ runner.os }}-composer-${{ matrix.magento-version }}-2
 
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php.cli-setup }}
+          extension-csv: mbstring #optional, setup extensions
+          ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
+          coverage: none #optional, setup coverage driver
+          pecl: true #optional, setup PECL
+      - name: Check PHP Version
+        run: php -v
+
       - name: Install Magento Source
         uses: php-actions/composer@v2
         env:
@@ -72,7 +87,6 @@ jobs:
           command: install --ignore-platform-reqs --working-dir ./magento
 
       - name: Install Database
-        uses: ${{ matrix.php-images }}
         run: |
           cd ./magento
           php -v
