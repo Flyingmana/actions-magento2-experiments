@@ -92,7 +92,9 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         with:
           command: install --ignore-platform-reqs --working-dir ./magento
-
+      - name: elastic check
+        run: |
+          curl elastic:9200
       - name: Install Database
         run: |
           cd ./magento
